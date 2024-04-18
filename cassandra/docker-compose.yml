@@ -1,0 +1,68 @@
+version: '3'
+services:
+  cassandra1:
+    image: cassandra:5.0
+    container_name: cassandra1
+    ports:
+      - "9042:9042"
+      - "9160:9160"
+    environment:
+      - CASSANDRA_CLUSTER_NAME=MyCluster
+      - CASSANDRA_SEEDS=cassandra1,cassandra2,cassandra3
+      - CASSANDRA_DC=DC1
+      - CASSANDRA_RACK=Rack1
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - MAX_HEAP_SIZE=256M
+    volumes:
+      - ../output/mysql-files:/csv_folder
+    networks:
+      - cassandra-net
+
+  cassandra2:
+    image: cassandra:5.0
+    container_name: cassandra2
+    environment:
+      - CASSANDRA_CLUSTER_NAME=MyCluster
+      - CASSANDRA_SEEDS=cassandra1,cassandra2,cassandra3
+      - CASSANDRA_DC=DC1
+      - CASSANDRA_RACK=Rack1
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - MAX_HEAP_SIZE=256M
+    volumes:
+      - ../output/mysql-files:/csv_folder
+    networks:
+      - cassandra-net
+    depends_on:
+      - cassandra1
+
+  cassandra3:
+    image: cassandra:5.0
+    container_name: cassandra3
+    environment:
+      - CASSANDRA_CLUSTER_NAME=MyCluster
+      - CASSANDRA_SEEDS=cassandra1,cassandra2,cassandra3
+      - CASSANDRA_DC=DC1
+      - CASSANDRA_RACK=Rack1
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - MAX_HEAP_SIZE=256M
+    volumes:
+      - ../output/mysql-files:/csv_folder
+    networks:
+      - cassandra-net
+    depends_on:
+      - cassandra2
+
+networks:
+  cassandra-net:
+    driver: bridge
+
+# voy a copiar el fichero cql a cassandra1, para que se cree la base de datos.
+# y luego hacer las queries de test que garantizan que la base de datos se ha creado correctamente.
+# tanto la lectura y la escritura de datos.
+
+# docker cp ./load_create_database.cql cassandra1:/cassandra.cql
+# docker cp ./queries_cassandra.cql cassandra1:/test_queries.cql
+# docker exec -it cassandra1 cqlsh
+# cqlsh> source '/cassandra.cql'
+# cqlsh> use dungeons;
+# cqlsh> source '/test_queries.cql'

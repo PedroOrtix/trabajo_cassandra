@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: dungeon
+
+    ports:
+      - 3306:3306
+
+    volumes:
+      - ../data:/data
+      - ../output:/output
+
+# por permisos de escritura (debo verlo con mas profundidad ya que uso Linux)
+# he guardado los csv en /var/lib/mysql-files y luego he hecho un cp a /output
+# docker cp mysql:/var/lib/mysql-files/ /output
