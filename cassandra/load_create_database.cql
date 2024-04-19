@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS hall_of_fame (
     email TEXT,
     username VARCHAR,
     time_minutes INT,
-    date TIMESTAMP,
+    date TIMESTAMP, -- es mejor formato
     PRIMARY KEY (country, dungeon_id, time_minutes, email, date)
 );
 
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS user_statistics (
     dungeon_id INT,
     email TEXT,
     time_minute INT,
-    date TIMESTAMP,
+    date TIMESTAMP, -- es mejor formato
     PRIMARY KEY (email, dungeon_id, time_minute, date)
 ) WITH CLUSTERING ORDER BY (dungeon_id ASC, time_minute ASC);
 
@@ -32,8 +32,8 @@ CREATE TABLE IF NOT EXISTS user_statistics (
 CREATE TABLE IF NOT EXISTS top_horde (
     country TEXT,
     event_id INT,
-    username VARCHAR,
     email TEXT,
+    username VARCHAR,
     n_kills COUNTER,
     PRIMARY KEY (country, event_id, email, username)
 );

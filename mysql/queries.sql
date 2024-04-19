@@ -1,4 +1,4 @@
---  Se presentan los datos y tiempos de todos los jugadores para cada nivel del juego en un país específico.
+--  Se presentan el top 5 datos y tiempos de todos los jugadores para cada nivel del juego en un país específico.
 SELECT t.email, t.country, t.idD, t.lowest_time, t.date, t.name, t.userName
 FROM (
     SELECT
@@ -32,7 +32,7 @@ SELECT cd.email, cd.idD, cd.time, cd.date
 FROM CompletedDungeons cd
 ORDER BY
     cd.email,
-    cd.idD,
+    cd.idD, -- dungeon id
     cd.time ASC
 INTO OUTFILE '/var/lib/mysql-files/user_statistics.csv'
 FIELDS TERMINATED BY ',' ENCLOSED BY '"'
@@ -47,7 +47,7 @@ JOIN WebUser W ON K.email = W.email
 GROUP BY K.idE, W.country, W.email
 ORDER BY
     W.country ASC,
-    K.idE ASC,
+    K.idE ASC, -- event id
     n_kills DESC,
 INTO OUTFILE '/var/lib/mysql-files/top_horde.csv'
 FIELDS TERMINATED BY ',' ENCLOSED BY '"'

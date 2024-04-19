@@ -63,6 +63,6 @@ networks:
 # docker cp ./load_create_database.cql cassandra1:/cassandra.cql
 # docker cp ./queries_cassandra.cql cassandra1:/test_queries.cql
 # docker exec -it cassandra1 cqlsh
-# cqlsh> source '/cassandra.cql'
+# cqlsh> source './cassandra.cql'
 # cqlsh> use dungeons;
-# cqlsh> source '/test_queries.cql'
+# cqlsh> source './test_queries.cql'
