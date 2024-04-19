@@ -200,14 +200,14 @@ CREATE TABLE IF NOT EXISTS user_statistics (
 
 __tabla top horde__
 
-En esta tabla, la clave primaria compuesta (country, event_id, n_kills, email) con ordenamiento descendente por n_kills y ascendente por email se ha diseñado para facilitar la obtención de los mejores jugadores por cantidad de asesinatos en una horda específica. La elección de country y event_id como parte de la partición permite una distribución equilibrada de datos y consultas eficientes por país y evento de horda. n_kills al ser de tipo COUNTER se podra acumular sumas (+1) se manera efecienta cada vez que un user mate a un moster.
+En esta tabla, la clave primaria compuesta (country, event_id, email, username) es necesaria para el seteo de n_kills a counter. La elección de country y event_id como parte de la partición permite una distribución equilibrada de datos y consultas eficientes por país y evento de horda. n_kills al ser de tipo COUNTER se podra acumular sumas (+1) se manera efecienta cada vez que un user mate a un moster.
 
 ```SQL
 CREATE TABLE IF NOT EXISTS top_horde (
     country TEXT,
     event_id INT,
-    username VARCHAR,
     email TEXT,
+    username VARCHAR,
     n_kills COUNTER,
     PRIMARY KEY (country, event_id, email, username)
 );
@@ -260,7 +260,9 @@ LIMIT 5;
 -- USER STATISTICS
 -- LECTURA
 CONSISTENCY ONE;
-SELECT * FROM user_statistics WHERE email = 'abellahector@example.org' AND dungeon_id = 1;
+SELECT * FROM user_statistics 
+WHERE email = 'abellahector@example.org' 
+    AND dungeon_id = 1;
 
 -- ESCRITURA
 CONSISTENCY QUORUM;
